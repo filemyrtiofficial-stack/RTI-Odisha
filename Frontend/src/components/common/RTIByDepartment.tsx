@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 import { PDFDownloadModal } from './PDFDownloadModal';
 import { hasPDF } from '../../utils/pdfMapping';
-import { rajasthanDepartments } from '../../data/rajasthanDepartments';
+import { rajasthanDepartments, uttarPradeshDepartments } from '../../data/rajasthanDepartments';
 
 // Telangana departments organized in columns (similar to the original Delhi layout)
 // Export for use in other components
@@ -116,7 +116,7 @@ export const telanganaDepartments = [
 ];
 
 interface RTIByDepartmentProps {
-  state?: 'telangana' | 'rajasthan';
+  state?: 'telangana' | 'rajasthan' | 'uttarPradesh';
 }
 
 const RTIByDepartmentComponent: React.FC<RTIByDepartmentProps> = ({ state = 'telangana' }) => {
@@ -125,8 +125,9 @@ const RTIByDepartmentComponent: React.FC<RTIByDepartmentProps> = ({ state = 'tel
 
   // Select departments based on state
   const isRajasthan = state === 'rajasthan';
-  const departments = isRajasthan ? rajasthanDepartments : telanganaDepartments;
-  const stateName = isRajasthan ? 'Rajasthan' : 'Telangana';
+  const isUttarPradesh = state === 'uttarPradesh';
+  const departments = isRajasthan ? rajasthanDepartments : (isUttarPradesh ? uttarPradeshDepartments : telanganaDepartments);
+  const stateName = isRajasthan ? 'Rajasthan' : (isUttarPradesh ? 'Uttar Pradesh' : 'Telangana');
 
   const handleDepartmentClick = useCallback((departmentName: string) => {
     // Check if PDF exists for this department
@@ -153,12 +154,12 @@ const RTIByDepartmentComponent: React.FC<RTIByDepartmentProps> = ({ state = 'tel
           {/* Section Header */}
           <div className="text-center mb-3">
             <h2 className="mb-2 text-[32px] md:text-[36px] font-semibold text-gray-900">
-              {isRajasthan ? 'RTI TEMPLATES FOR RAJASTHAN DEPARTMENTS' : `RTI for ${stateName} Government Departments`}
+              {isRajasthan ? 'RTI TEMPLATES FOR RAJASTHAN DEPARTMENTS' : (isUttarPradesh ? 'RTI TEMPLATES FOR UTTAR PRADESH DEPARTMENTS' : `RTI for ${stateName} Government Departments`)}
             </h2>
-            {isRajasthan && (
+            {(isRajasthan || isUttarPradesh) && (
               <div className="mx-auto h-1 w-24 bg-yellow-500"></div>
             )}
-            {!isRajasthan && (
+            {(!isRajasthan && !isUttarPradesh) && (
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 You can file RTI applications for almost any {stateName} Government department or authority. Below are some commonly used categories. We also support RTI filing for other departments that are not listed here.
               </p>

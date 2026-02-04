@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ============================================================================
  * DYNAMIC STATE PAGE
  * ============================================================================
@@ -247,7 +247,7 @@ export const StatePage: React.FC = () => {
           </Suspense>
 
           <Suspense fallback={<div className="min-h-[300px]" />}>
-            <RTIByDepartment />
+            <RTIByDepartment state="uttarPradesh" />
           </Suspense>
 
           <Suspense fallback={<div className="min-h-[300px]" />}>
