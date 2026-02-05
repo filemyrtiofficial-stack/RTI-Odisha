@@ -128,6 +128,7 @@ const RTIByDepartmentComponent: React.FC<RTIByDepartmentProps> = ({ state = 'tel
   const isUttarPradesh = state === 'uttarPradesh';
   const departments = isRajasthan ? rajasthanDepartments : (isUttarPradesh ? uttarPradeshDepartments : telanganaDepartments);
   const stateName = isRajasthan ? 'Rajasthan' : (isUttarPradesh ? 'Uttar Pradesh' : 'Telangana');
+  const categoriesToRender = isUttarPradesh ? uttarPradeshDepartments.slice(0, 10) : departments;
 
   const handleDepartmentClick = useCallback((departmentName: string) => {
     // Check if PDF exists for this department
@@ -169,8 +170,8 @@ const RTIByDepartmentComponent: React.FC<RTIByDepartmentProps> = ({ state = 'tel
           {/* Compact Multi-Column Layout - Same for Rajasthan and Telangana */}
           <nav aria-label="RTI Department Navigation" className="mt-8">
             <div className={isRajasthan ? 'bg-white rounded-lg px-6 md:px-8 lg:px-10 py-6' : ''}>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-4">
-                {departments.map((column: { category: string; items: string[] }, columnIndex: number) => (
+              <div className={isUttarPradesh ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-4' : 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-4'}>
+                {categoriesToRender.map((column: { category: string; items: string[] }, columnIndex: number) => (
                   <div key={columnIndex} className="flex flex-col">
                     <h3 className="text-sm font-semibold text-gray-900 mb-1">{column.category}</h3>
                     <ul className="space-y-0.5">
@@ -207,4 +208,3 @@ const RTIByDepartmentComponent: React.FC<RTIByDepartmentProps> = ({ state = 'tel
 };
 
 export const RTIByDepartment = memo(RTIByDepartmentComponent);
-
